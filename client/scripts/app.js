@@ -48,7 +48,7 @@ app.fetch = function(room){
   var messageIds = [];
   var rooms = [];
   if (room) {
-    $('.current-room-name').append("<h1> <i class='fa fa-angle-right'></i> " + currentRoom + "</h1>");
+    $('.current-room-name').append("<h2> <i class='fa fa-angle-right'></i> " + currentRoom + "</h2>");
   }
   setInterval(function(){
     $.ajax({
@@ -71,9 +71,9 @@ app.fetch = function(room){
               var msg = _.escape(data.results[i].text);
               var user = _.escape(data.results[i].username);
               if (_.contains(app.friends, user)) {
-                $(".messages").prepend("<li>" + "<p class='user friend'>" + user + "</p>" + "<p class='message'>" + msg + "</p>" + "</li>");
+                $(".messages").prepend("<li>" + "<span class='user friend'>" + user + "</span>" + "<span class='message'>" + msg + "</span>" + "</li>");
               } else {
-                $(".messages").prepend("<li>" + "<p class='user'>" + user + "</p>" + "<p class='message'>" + msg + "</p>" + "</li>");
+                $(".messages").prepend("<li>" + "<span class='user'>" + user + "</span>" + "<span class='message'>" + msg + "</span>" + "</li>");
               }
               messageIds.push(data.results[i].objectId);
 
