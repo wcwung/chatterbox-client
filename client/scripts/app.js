@@ -18,14 +18,15 @@ $(function(){
 //     }
 //   });
 // };
-
+var currentRoom = "";
 var app = {};
+app.friends = [];
 app.init = function(){};
 app.send = function(message){
   var dataMessage = {
     username : window.location.search.slice(10),
     text : message,
-    roomname : undefined
+    roomname : currentRoom
   };
   $.ajax({
     // always use this url
@@ -42,11 +43,13 @@ app.send = function(message){
     }
   });
 };
-app.fetch = function(){
+app.fetch = function(room){
 
   var messageIds = [];
   var rooms = [];
-
+  if (room) {
+    $('.current-room-name').append("<h1> <i class='fa fa-angle-right'></i> " + currentRoom + "</h1>");
+  }
   setInterval(function(){
     $.ajax({
         // always use this url
@@ -55,19 +58,25 @@ app.fetch = function(){
       contentType: 'application/json',
       success: function (data) {
         for (var i = data.results.length-1; i >= 0; i--){
-          if (!_.contains( messageIds, data.results[i].objectId )){
-            var msg = $("<div/>").text(data.results[i].text).html();
-            var user = $("<div/>").text(data.results[i].username).html();
-            $(".messages").prepend("<li>" + "<span class='user'>" + user + "</span>" + "<span class='message'>" + msg + "</span>" + "</li>");
-            messageIds.push(data.results[i].objectId);
-
-              if (!_.contains(rooms, data.results[i].roomname)){
-                rooms.push(data.results[i].roomname);
-                console.log(rooms);
-                $("#roomList").empty();
-              for (var j = 0; j < rooms.length; j++){
-                  $("#roomList").append("<option>" + rooms[j] + "</option>");
+          if (!_.contains(rooms, data.results[i].roomname)){
+            rooms.push(data.results[i].roomname);
+            // console.log(rooms);
+            $("#roomList").empty();
+            for (var j = 0; j < rooms.length; j++){
+                $("#roomList").append("<option value=" + rooms[j] + ">" + rooms[j] + "</option>");
+            }
+          }
+          if (data.results[i].roomname === room || room === undefined) {
+            if (!_.contains( messageIds, data.results[i].objectId )){
+              var msg = _.escape(data.results[i].text);
+              var user = _.escape(data.results[i].username);
+              if (_.contains(app.friends, user)) {
+                $(".messages").prepend("<li>" + "<p class='user friend'>" + user + "</p>" + "<p class='message'>" + msg + "</p>" + "</li>");
+              } else {
+                $(".messages").prepend("<li>" + "<p class='user'>" + user + "</p>" + "<p class='message'>" + msg + "</p>" + "</li>");
               }
+              messageIds.push(data.results[i].objectId);
+
             }
           }
         }
@@ -82,9 +91,38 @@ app.fetch = function(){
 
 app.fetch();
 
+// POST
 $('.submit-btn').on('click', function() {
   app.send($(".submission-input").val());
 });
 
-// $('.messages').append(message);
+$('.all-rooms').on('click', function() {
+  app.fetch();
+  $('.messages').empty();
+  $('.current-room-name').empty();
+  console.log("test");
+});
+
+// Fetches room name based on change in dropdown
+$('#roomList').change(function(){
+  $('.messages').empty();
+  $('.current-room-name').empty();
+  currentRoom = $(this).val();
+  app.fetch($(this).val());
+});
+
+// Add/Remove friends
+$('.messages').find("p").on('click', function() {
+  console.log("testing");
+  // if (_.contains(app.friends, $(this).val())){
+  //   // if friend is already in array, remove friend
+  //   app.friends = _.without(app.friends, $(this).val());
+
+  // } else {
+  //   // else add friend
+  //   app.friends.push($(this).val());
+  // }
+});
+
+// Fin.
 });

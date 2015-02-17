@@ -13,7 +13,7 @@ body {
     padding: 10px 60px;
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
-    min-height: 600px;
+    min-height: 800px;
     height: 100%;
 }
 
@@ -155,9 +155,9 @@ section.user-input {
 }
 
 input.submission-input {
-    width: 82%;
+    width: 80%;
     height: 40px;
-    padding: 0;
+    padding: 0 2px;
     font-family: "Open Sans", sans-serif;
     font-size: 0.8em;
 }
@@ -174,4 +174,31 @@ button.submit-btn {
 
 #roomList {
     margin-top: 20px;
+}
+
+.room-name h1 {
+    color: #383B57;
+}
+
+.current-room-name {
+    display: inline;
+}
+
+.all-rooms {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.friend {
+    font-weight: bold;
+}
+
+select {
+    border: none;
+    padding: 50px;
+    font-size: 0.8em;
 }
