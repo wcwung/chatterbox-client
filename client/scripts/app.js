@@ -45,6 +45,7 @@ app.send = function(message){
 app.fetch = function(){
 
   var messageIds = [];
+  var rooms = [];
 
   setInterval(function(){
     $.ajax({
@@ -57,8 +58,17 @@ app.fetch = function(){
           if (!_.contains( messageIds, data.results[i].objectId )){
             var msg = $("<div/>").text(data.results[i].text).html();
             var user = $("<div/>").text(data.results[i].username).html();
-            $(".messages").prepend("<li>" + "<span class='user'>" + user + "</span>" + ": " + "<span class='message'>" + msg + "</span>" + "</li>");
+            $(".messages").prepend("<li>" + "<span class='user'>" + user + "</span>" + ": " + "<span class='message'>" + msg + "</span>" + " room: " + data.results[i].roomname + "</li>");
             messageIds.push(data.results[i].objectId);
+
+              if (!_.contains(rooms, data.results[i].roomname)){
+                rooms.push(data.results[i].roomname);
+                console.log(rooms);
+                $("#roomList").empty();
+              for (var j = 0; j < rooms.length; j++){
+                  $("#roomList").append("<option>" + rooms[j] + "</option>");
+              }
+            }
           }
         }
       },
