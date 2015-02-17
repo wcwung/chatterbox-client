@@ -1,5 +1,5 @@
 // YOUR CODE HERE:
-
+// var message = "This is a test. Of REST. The best."
 
 // $.ajax({
 //   // always use this url
@@ -15,6 +15,7 @@
 //     console.error('chatterbox: Failed to send message');
 //   }
 // });
+
 var pullMessages = function(){
 
   var messageIds = [];
@@ -22,9 +23,11 @@ var pullMessages = function(){
   setInterval(function(){
     $.get ("https://api.parse.com/1/classes/chatterbox?order=-createdAt", function(data) {
       for (var i = data.results.length-1; i >= 0; i--){
-        console.log(data.results[i].objectId);
         if (!_.contains( messageIds, data.results[i].objectId )){
-          $(".messages").prepend("<li>" + data.results[i].username + ": " + data.results[i].text + "</li>").text();
+          var msg = $("<div/>").text(data.results[i].text).html();
+          var user = $("<div/>").text(data.results[i].username).html();
+          $(".messages").prepend("<li>" + user + ": " + msg + data.results[i].createdAt + "</li>");
+
           messageIds.push(data.results[i].objectId);
         }
       }
