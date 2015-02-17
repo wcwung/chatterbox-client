@@ -82,3 +82,11 @@ form input[type=text] {
 .spinner img {
     padding: 10px;
 }
+
+li {
+    list-style: none;
+}
+
+.user {
+    font-weight: bold;
+}
