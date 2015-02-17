@@ -58,7 +58,7 @@ app.fetch = function(){
           if (!_.contains( messageIds, data.results[i].objectId )){
             var msg = $("<div/>").text(data.results[i].text).html();
             var user = $("<div/>").text(data.results[i].username).html();
-            $(".messages").prepend("<li>" + "<span class='user'>" + user + "</span>" + ": " + "<span class='message'>" + msg + "</span>" + " room: " + data.results[i].roomname + "</li>");
+            $(".messages").prepend("<li>" + "<span class='user'>" + user + "</span>" + "<span class='message'>" + msg + "</span>" + "</li>");
             messageIds.push(data.results[i].objectId);
 
               if (!_.contains(rooms, data.results[i].roomname)){
