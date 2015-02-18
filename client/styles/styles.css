@@ -217,3 +217,7 @@ select {
     padding: 50px;
     font-size: 0.8em;
 }
+
+i.fa-angle-right {
+    margin-right: 10px;
+}

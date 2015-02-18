@@ -20,7 +20,7 @@ $(function(){
 // };
 var currentRoom = "";
 var app = {};
-app.friends = [];
+var friends = [];
 app.init = function(){};
 app.send = function(message){
   var dataMessage = {
@@ -48,7 +48,7 @@ app.fetch = function(room){
   var messageIds = [];
   var rooms = [];
   if (room) {
-    $('.current-room-name').append("<h2> <i class='fa fa-angle-right'></i> " + currentRoom + "</h2>");
+    $('.current-room-name').append("<h2> <i class='fa fa-angle-right'></i>" + currentRoom + "</h2>");
   }
   setInterval(function(){
     $.ajax({
@@ -70,7 +70,7 @@ app.fetch = function(room){
             if (!_.contains( messageIds, data.results[i].objectId )){
               var msg = _.escape(data.results[i].text);
               var user = _.escape(data.results[i].username);
-              if (_.contains(app.friends, user)) {
+              if (_.contains(friends, user)) {
                 $(".messages").prepend("<li>" + "<span class='user friend'>" + user + "</span>" + "<span class='message'>" + msg + "</span>" + "</li>");
               } else {
                 $(".messages").prepend("<li>" + "<span class='user'>" + user + "</span>" + "<span class='message'>" + msg + "</span>" + "</li>");
@@ -90,6 +90,21 @@ app.fetch = function(room){
 };
 
 app.fetch();
+
+$('.messages').on("click", ".user", function() {
+  // var $(this).text() = $(this).text();
+  if (_.contains(friends, $(this).text())){
+    friends = _.without(friends, $(this).text());
+    // Traverse DOM and remove class from matching elements
+    app.fetch();
+  } else {
+    friends.push($(this).text());
+    // Traverse Dom and add class
+    app.fetch();
+  }
+  console.log(friends);
+  console.log(friends[0]);
+});
 
 // POST
 $('.submit-btn').on('click', function() {
@@ -112,17 +127,18 @@ $('#roomList').change(function(){
 });
 
 // Add/Remove friends
-$('.messages').find("p").on('click', function() {
-  console.log("testing");
-  // if (_.contains(app.friends, $(this).val())){
-  //   // if friend is already in array, remove friend
-  //   app.friends = _.without(app.friends, $(this).val());
+// $('.messages').find("li").on('click', function() {
+//   console.log("testing");
+//   // if (_.contains(app.friends, $(this).val())){
+//   //   // if friend is already in array, remove friend
+//   //   app.friends = _.without(app.friends, $(this).val());
 
-  // } else {
-  //   // else add friend
-  //   app.friends.push($(this).val());
-  // }
-});
+//   // } else {
+//   //   // else add friend
+//   //   app.friends.push($(this).val());
+//   // }
+// });
+
 
 // Fin.
 });
